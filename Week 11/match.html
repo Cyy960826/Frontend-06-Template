@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>match</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="header">header</div>
+    <div class="wrapper">
+        <div class="item" id="item1">item1</div>
+        <div class="item" id="item2">item2</div>
+    </div>
+
+    <script>
+        function match(selector, element) {
+            if (element == null) return false;
+            
+            const selectorList = selector.split(' ').reverse(); //TODO: 按优先级排列selector
+
+            for (const selector of selectorList) {
+                const list = selector.match(/(#|.)?\w+/g);
+                for (const item of list) {
+                    if (item.charAt(0) === '#') {
+                        if (!(element.id && element.id === item.replace('#', ''))) return false;
+                    } else if (item.charAt(0) === '.') {
+                        if (!(element.classList.length > 0 && Array.from(element.classList).includes(item.replace('.', '')))) return false;
+                    } else {
+                        if (element.tagName !== item.toUpperCase()) return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+        console.log(match('div #item1', document.getElementById('item1')));
+        console.log(match('div .item', document.getElementById('item2')));
+    </script>
+</body>
+
+</html>
